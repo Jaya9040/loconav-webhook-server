@@ -55,7 +55,7 @@ class LocoNavBackgroundMonitor {
             const result = await chrome.storage.sync.get(['loconavConfig']);
             if (result.loconavConfig) {
                 this.config = result.loconavConfig;
-                this.startMonitoring();
+                this.startWebhookMonitoring();
             }
         } catch (error) {
             console.error('Error loading config:', error);

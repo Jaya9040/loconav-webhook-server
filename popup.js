@@ -208,30 +208,55 @@ class LocoNavMonitor {
     }
 
     async loadVehicles() {
-        if (!this.config) return;
+        if (!this.config) {
+            this.renderVehicles();
+            return;
+        }
 
         const vehicleList = document.getElementById('vehicleList');
         vehicleList.innerHTML = '<div class="loading">Loading vehicles...</div>';
 
         try {
-            const response = await fetch(`${this.config.baseUrl}/api/v1/vehicles`, {
+            // Get webhook server URL (replace /loconav-webhook with /api/vehicles)
+            const apiUrl = this.config.webhookUrl.replace('/loconav-webhook', '/api/vehicles');
+            console.log('Fetching vehicles from:', apiUrl);
+            
+            const response = await fetch(apiUrl, {
+                method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${this.config.sessionToken}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    ...(this.config.authHeader && { 'Authorization': this.config.authHeader })
                 }
             });
 
+            console.log('Response status:', response?.status);
+            console.log('Response ok:', response?.ok);
+
             if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Response error:', errorText);
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
             const data = await response.json();
-            this.vehicles = (data.vehicles || data || []).slice(0, 4); // Limit to 4 vehicles
+            console.log('Received data:', data);
+            
+            const allVehicles = data.vehicles || [];
+            console.log('All vehicles:', allVehicles);
+            
+            // Filter to only configured vehicles and limit to 4
+            this.vehicles = allVehicles.filter(vehicle => 
+                this.config.vehicleNumbers.includes(vehicle.vehicle_number)
+            ).slice(0, 4);
+            
+            console.log('Filtered vehicles:', this.vehicles);
+            
             this.renderVehicles();
             this.updateConnectionStatus(true);
         } catch (error) {
             console.error('Error loading vehicles:', error);
-            vehicleList.innerHTML = '<div class="loading">Failed to load vehicles. Check your configuration.</div>';
+            console.error('Error details:', error.message);
+            vehicleList.innerHTML = `<div class="loading">Failed to load vehicles: ${error.message}</div>`;
             this.updateConnectionStatus(false);
         }
     }
@@ -239,19 +264,60 @@ class LocoNavMonitor {
     renderVehicles() {
         const vehicleList = document.getElementById('vehicleList');
         
+        if (!this.config) {
+            // Show configured vehicle numbers when no webhook data yet
+            const configuredVehicles = this.config?.vehicleNumbers || [];
+            if (configuredVehicles.length === 0) {
+                vehicleList.innerHTML = '<div class="loading">No vehicles configured</div>';
+                return;
+            }
+            
+            vehicleList.innerHTML = configuredVehicles.map(vehicleNumber => `
+                <div class="vehicle-item">
+                    <div class="vehicle-name">${vehicleNumber}</div>
+                    <div class="vehicle-status">
+                        <span>Speed: 0 km/h</span>
+                        <span>Status: No data</span>
+                        <span>Last update: No data</span>
+                        <span>Ignition: Off</span>
+                    </div>
+                </div>
+            `).join('');
+            return;
+        }
+
         if (this.vehicles.length === 0) {
-            vehicleList.innerHTML = '<div class="loading">No vehicles found</div>';
+            // Show configured vehicles even if no webhook data received yet
+            const configuredVehicles = this.config.vehicleNumbers || [];
+            vehicleList.innerHTML = configuredVehicles.map(vehicleNumber => `
+                <div class="vehicle-item">
+                    <div class="vehicle-name">${vehicleNumber}</div>
+                    <div class="vehicle-status">
+                        <span>Speed: 0 km/h</span>
+                        <span>Status: No data</span>
+                        <span>Last update: No data</span>
+                        <span>Ignition: Off</span>
+                    </div>
+                </div>
+            `).join('');
             return;
         }
 
         vehicleList.innerHTML = this.vehicles.map(vehicle => {
             const status = this.getVehicleStatus(vehicle);
+            const vehicleName = vehicle.vehicle_number || vehicle.name || vehicle.vehicleName || 'Unknown Vehicle';
+            const speed = vehicle.speed || 0;
+            const ignition = vehicle.ignition_on ? 'On' : 'Off';
+            const lastUpdate = vehicle.gpstime ? new Date(vehicle.gpstime * 1000).toLocaleString() : 'No data';
+            
             return `
                 <div class="vehicle-item ${status.class}">
-                    <div class="vehicle-name">${vehicle.name || vehicle.vehicleName || 'Unknown Vehicle'}</div>
+                    <div class="vehicle-name">${vehicleName}</div>
                     <div class="vehicle-status">
-                        <span>Speed: ${vehicle.speed || 0} km/h</span>
+                        <span>Speed: ${speed} km/h</span>
                         <span>Status: ${status.text}</span>
+                        <span>Last update: ${lastUpdate}</span>
+                        <span>Ignition: ${ignition}</span>
                     </div>
                 </div>
             `;

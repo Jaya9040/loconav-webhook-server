@@ -14,7 +14,9 @@
     "https://app.a.loconav.com/*",
     "https://sa.loconav.com/*",
     "https://om.loconav.com/*",
-    "https://np.loconav.com/*"
+    "https://np.loconav.com/*",
+    "https://loconav-webhook-server.onrender.com/*",
+    "https://*.onrender.com/*"
   ],
   "background": {
     "service_worker": "background.js"
