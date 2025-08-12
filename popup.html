@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocoNav Vehicle Monitor</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LocoNav Monitor</h1>
+            <div class="status-indicator" id="connectionStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Disconnected</span>
+            </div>
+        </header>
+
+        <div class="config-section" id="configSection">
+            <h2>LocoNav Webhook Configuration</h2>
+            <div class="info-box">
+                <p><strong>Note:</strong> LocoNav uses a Push API system. You'll need to set up a webhook endpoint in your LocoNav dashboard to receive real-time vehicle data.</p>
+            </div>
+            <form id="configForm">
+                <div class="form-group">
+                    <label for="webhookUrl">Your Webhook URL:</label>
+                    <input type="url" id="webhookUrl" placeholder="https://your-server.com/loconav-webhook" required>
+                    <small>This is where LocoNav will send vehicle data</small>
+                </div>
+                <div class="form-group">
+                    <label for="authHeader">Authorization Header (Optional):</label>
+                    <input type="text" id="authHeader" placeholder="Bearer your-secret-token">
+                    <small>For securing your webhook endpoint</small>
+                </div>
+                <div class="form-group">
+                    <label for="speedLimit">Speed Limit (km/h):</label>
+                    <input type="number" id="speedLimit" value="80" min="1" max="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="stagnationTime">Stagnation Alert (minutes):</label>
+                    <input type="number" id="stagnationTime" value="30" min="5" max="120" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleNumbers">Vehicle Numbers (comma-separated):</label>
+                    <input type="text" id="vehicleNumbers" placeholder="VH001, VH002, VH003, VH004" required>
+                    <small>Enter up to 4 vehicle numbers to monitor</small>
+                </div>
+                <button type="submit" class="btn-primary">Save Configuration</button>
+            </form>
+            
+            <div class="webhook-setup">
+                <h3>Setup Instructions:</h3>
+                <ol>
+                    <li>Set up a webhook server (see documentation)</li>
+                    <li>Configure LocoNav to send data to your webhook URL</li>
+                    <li>Enter your webhook URL and vehicle numbers above</li>
+                    <li>The extension will monitor incoming data for alerts</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="monitoring-section" id="monitoringSection" style="display: none;">
+            <h2>Vehicle Status (4 Vehicles)</h2>
+            <div class="vehicle-list" id="vehicleList">
+                <div class="loading">Loading vehicles...</div>
+            </div>
+            
+            <div class="distance-section">
+                <h3>Daily Distance Summary</h3>
+                <div class="distance-summary" id="distanceSummary">
+                    <div class="loading">Loading distance data...</div>
+                </div>
+                <div class="distance-controls">
+                    <input type="date" id="dateSelector" />
+                    <button id="exportBtn" class="btn-secondary">Export Report</button>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="refreshBtn" class="btn-secondary">Refresh</button>
+                <button id="settingsBtn" class="btn-secondary">Settings</button>
+            </div>
+        </div>
+
+        <div class="alerts-section">
+            <h2>Recent Alerts</h2>
+            <div class="alerts-list" id="alertsList">
+                <div class="no-alerts">No alerts yet</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    width: 420px;
+    min-height: 650px;
+}
+
+.container {
+    background: white;
+    border-radius: 12px;
+    margin: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+h2 {
+    color: #34495e;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e74c3c;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.connected {
+    background: #27ae60;
+}
+
+.status-text {
+    font-size: 12px;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 13px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn-primary, .btn-secondary {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+    margin-right: 8px;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.vehicle-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid #28a745;
+}
+
+.vehicle-item.speeding {
+    border-left-color: #dc3545;
+    background: #fff5f5;
+}
+
+.vehicle-item.stagnant {
+    border-left-color: #ffc107;
+    background: #fffbf0;
+}
+
+.vehicle-name {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+
+.vehicle-status {
+    font-size: 12px;
+    color: #6c757d;
+    display: flex;
+    justify-content: space-between;
+}
+
+.alert-item {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.alert-item.critical {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-time {
+    color: #6c757d;
+    font-size: 11px;
+    float: right;
+}
+
+.loading, .no-alerts {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+.config-section, .monitoring-section, .alerts-section {
+    margin-bottom: 20px;
+}
+
+.info-box {
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.info-box p {
+    margin: 0;
+    font-size: 13px;
+    color: #1565c0;
+}
+
+.webhook-setup {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e1e8ed;
+}
+
+.webhook-setup h3 {
+    color: #2c3e50;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.webhook-setup ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.webhook-setup li {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+small {
+    display: block;
+    color: #6c757d;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.distance-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e1e8ed;
+}
+
+.distance-section h3 {
+    color: #2c3e50;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.distance-summary {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.distance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.distance-item:last-child {
+    border-bottom: none;
+}
+
+.vehicle-distance-name {
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 13px;
+}
+
+.distance-value {
+    font-weight: 600;
+    color: #28a745;
+    font-size: 13px;
+}
+
+.distance-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.distance-controls input[type="date"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.total-distance {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.alerts-section {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.alerts-section::-webkit-scrollbar {
+    width: 4px;
+}
+
+.alerts-section::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.alerts-section::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+}
+
+.alerts-section::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

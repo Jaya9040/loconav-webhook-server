@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "LocoNav Vehicle Monitor",
+  "version": "1.0.0",
+  "description": "Monitor LocoNav vehicles for speeding and stagnation alerts",
+  "permissions": [
+    "storage",
+    "notifications",
+    "alarms",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.a.loconav.com/*",
+    "https://app.a.loconav.com/*",
+    "https://sa.loconav.com/*",
+    "https://om.loconav.com/*",
+    "https://np.loconav.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LocoNav Vehicle Monitor",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
